@@ -63,9 +63,9 @@ If you are not familiar with the Visual Studio Code Snippets, and want to learn 
 
 This hands-on lab includes the following exercises:
 
-1. Using the Service Bus to Host Services Remotely
+1. [Using the Service Bus to Host Services Remotely](#exercise1)
 
-1. Publishing Services Hosted in Windows Azure with the Service Bus
+1. [Publishing Services Hosted in Windows Azure with the Service Bus](#exercise2)
 
  
  
@@ -73,7 +73,7 @@ Estimated time to complete this lab: **45 minutes**.
 
 > **Note:** When you first start Visual Studio, you must select one of the predefined settings collections. Every predefined collection is designed to match a particular development style and determines window layouts, editor behavior, IntelliSense code snippets, and dialog box options. The procedures in this lab describe the actions necessary to accomplish a given task in Visual Studio when using the **General Development Settings** collection. If you choose a different settings collection for your development environment, there may be differences in these procedures that you need to take into account.
 
-<a name="Exercise1" />
+<a name="exercise1" />
 ##  Exercise 1: Using the Service Bus to Host Services Remotely  ##
 
 
@@ -574,7 +574,7 @@ You are now ready to test the application using the Service Bus.
 
 1. Press **ENTER** in both console windows to terminate the services and then exit the client application.
 
- 
+<a name="exercise2" />
 ### Exercise 2: Publishing Services Hosted in Windows Azure with the Service Bus ###
 
  Azure-hosted services can publish their endpoints using the Service Bus too.   
