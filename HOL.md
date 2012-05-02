@@ -864,17 +864,3 @@ sbaztool.exe -n [YOUR-SB-NAMESPACE] -k [YOUR-SB-NAMESPACE-DEFAULT-KEY] makeid Fi
 
  
 You have now created issuers for both the service and for the client application and set up rules for the service issuer to grant it _Listen_ and _Send_ privileges and for the client application permission to _Send_.
-
-
-
-
-
-
-
-Page | 2 
-
-
-
-
-
-
