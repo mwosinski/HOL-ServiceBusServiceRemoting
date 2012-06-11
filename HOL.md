@@ -1,5 +1,7 @@
-﻿#Service Remoting With Windows Azure Service Bus#
+﻿<a name="Title" />
+#Service Remoting With Windows Azure Service Bus#
 
+<a name="Overview" />
 ## Overview ##
 
 Due to recent bank regulation, the Fictional Bank is ordered to split into two separate banking entities: Fictional Investment and Fictional Retail. The IT department needs to restructure the existing customer relationship management (CRM) such that both banking entities can continue to share customer data even though they are no longer within the same corporate network boundary. The existing CRM Web services in Fictional Bank are largely written using Windows Communication Foundation and hosted on-premises.
@@ -10,6 +12,7 @@ In a second phase, Fictional Investment outsources its application services host
 
 This hands-on lab walks you through this scenario using a sample application that replicates, albeit in a simplistic manner, the application architecture at Fictional Bank.
 
+<a name="Objectives" />
 ### Objectives ###
 
 In this hands-on lab, you will learn how to:
@@ -22,7 +25,7 @@ In this hands-on lab, you will learn how to:
 
 - Publish services hosted in Windows Azure using the Service Bus
 
- 
+<a name="Prerequisites" />
 ### Prerequisites ###
 
 The following is required to complete this hands-on Lab:
@@ -33,19 +36,18 @@ The following is required to complete this hands-on Lab:
 
 - [Microsoft Visual Studio 2010](http://msdn.microsoft.com/vstudio/products/)
 
-- [Windows Azure Tools for Visual Studio 1.6](http://www.microsoft.com/windowsazure/sdk/)
+- [Windows Azure Tools for Visual Studio 1.7](http://www.microsoft.com/windowsazure/sdk/)
+- [Windows Azure  Libraries for .Net 1.7](http://www.microsoft.com/windowsazure/sdk/)
 
-- [Windows Azure  Libraries for .Net 1.6](http://www.microsoft.com/web/gallery/install.aspx?appid=WindowsAzureLibrariesNET)
+>**Note:** This lab was designed to use Windows 7 Operating System. You must have Internet access to complete the lab.
 
- 
-You must have Internet access to complete the lab.
-
+<a name="Setup" />
 ### Setup ###
 In order to execute the exercises in this hands-on lab you need to set up your environment.
 
 1. Open a Windows Explorer window and browse to the lab's **Source** folder.
 
-1. Double-click the **Setup.cmd** file in this folder to launch the setup process that will configure your environment and install the Visual Studio code snippets for this lab.
+1. Execute the **Setup.cmd** file with elevation to launch the setup process that will configure your environment and install the Visual Studio code snippets for this lab.
 
 1. If the User Account Control dialog is shown, confirm the action to proceed.
 
@@ -58,14 +60,18 @@ Throughout the lab document, you will be instructed to insert code blocks. For y
 
 If you are not familiar with the Visual Studio Code Snippets, and want to learn how to use them, you can refer to the **Setup.docx** document in the **Assets** folder of the training kit, which contains a section describing how to use them.
 
- 
-### Exercises ###
+>**Note:** Each exercise is accompanied by a starting solution located in the Begin folder of the exercise that allows you to follow each exercise independently of the others. Please be aware that the code snippets that are added during an exercise are missing from these starting solutions and that they will not necessarily work until you complete the exercise. Inside the source code for an exercise, you will also find an End folder containing a Visual Studio solution with the code that results from completing the steps in the corresponding exercise. You can use these solutions as guidance if you need additional help as you work through this hands-on lab.
+
+---
+
+<a name="Exercises" />
+## Exercises ##
 
 This hands-on lab includes the following exercises:
 
-1. [Using the Service Bus to Host Services Remotely](#exercise1)
+1. [Using the Service Bus to Host Services Remotely](#Exercise1)
 
-1. [Publishing Services Hosted in Windows Azure with the Service Bus](#exercise2)
+1. [Publishing Services Hosted in Windows Azure with the Service Bus](#Exercise2)
 
  
  
@@ -73,8 +79,8 @@ Estimated time to complete this lab: **45 minutes**.
 
 > **Note:** When you first start Visual Studio, you must select one of the predefined settings collections. Every predefined collection is designed to match a particular development style and determines window layouts, editor behavior, IntelliSense code snippets, and dialog box options. The procedures in this lab describe the actions necessary to accomplish a given task in Visual Studio when using the **General Development Settings** collection. If you choose a different settings collection for your development environment, there may be differences in these procedures that you need to take into account.
 
-<a name="exercise1" />
-##  Exercise 1: Using the Service Bus to Host Services Remotely  ##
+<a name="Exercise1" />
+###  Exercise 1: Using the Service Bus to Host Services Remotely  ###
 
 
 In this exercise, you start with a solution that implements the Fictional Bank application architecture. The solution consists of two web services hosted by Fictional Investment. The first service, the CRM Data Service, provides application services for Fictional Investment. A second service, the FI Public Service, makes use of the first and exposes a subset of the CRM functionality to make it available to users in Fictional Retail.
@@ -87,13 +93,14 @@ Initially, you run the service to reproduce a scenario where all services are ho
 
 Nonetheless, Fictional Retail clients are not located within Fictional Investment's network.  In order to make the services externally accessible to Fictional Retail clients, you then update the WCF configuration to expose the FI Public Service over the Service Bus using a **NetTcpRelayBinding** class and a public endpoint address. This makes the service reachable from anywhere and allows you to fulfill one of the goals in the proposed scenario.
 
-**Task 1 - Running the Service On-Premises**
+<a name="Ex1Task1" />
+#### Task 1 - Running the Service On-Premises ####
 
 In this task, you run the solution and test it locally using a **NetTcpBinding** to replicate the fully on-premises scenario, with services and clients located within the same network boundary.
 
-1. Open Visual Studio from**Start | All Programs | Microsoft Visual Studio 2010**. 
+1. Open Visual Studio from **Start | All Programs | Microsoft Visual Studio 2010**. 
 
-1. In the **File** menu, choose **Open** **Project**. In the **Open Project** dialog, browse to **\Source\Ex1-ServiceBusRemoting\Begin**, select **ServiceRemoting.sln** in the folder for the language of your preference (Visual C# or Visual Basic) and click **Open**. 
+1. In the **File** menu, choose **Open** **Project**. In the **Open Project** dialog, browse to **\Source\Ex1-ServiceBusRemoting\Begin**, select **ServiceRemoting.sln** and click **Open**. 
 
 	The solution contains the following projects:
 
@@ -103,19 +110,16 @@ In this task, you run the solution and test it locally using a **NetTcpBinding**
 	| **FictionalInvestment.PublicServices** | A console application that hosts the public service for Fictional Bank |
 	| **FictionalRetail.Crm.Client** | A Windows Forms application that uses the public services provided by the CRM |
 
- 	![Solution Explorer showing the CRM application components C](./images/Solution-Explorer-showing-the-CRM-application-components-C.png?raw=true "Solution Explorer showing the CRM application components C")  
+ 	![Solution Explorer showing the CRM application components](./images/Solution-Explorer-showing-the-CRM-application-components-C.png?raw=true "Solution Explorer showing the CRM application components")  
  
-	_Solution Explorer showing the CRM application components (C#)_  
-
- 	![Solution Explorer showing the CRM application components VB](./images/Solution-Explorer-showing-the-CRM-application-components-VB.png?raw=true "Solution Explorer showing the CRM application components VB")
+	_Solution Explorer showing the CRM application components_  
  
-	_Solution Explorer showing the CRM application components (VB)_  
 
 1. Configure the solution to launch the client and both the CRM Data Service and the FI Public Service simultaneously. To do this, in **Solution Explorer** right-click the **ServiceRemoting** solution and select **Set StartUp Projects**. In the **Solution 'ServiceRemoting' Property Pages** dialog, select the option labeled **Multiple startup projects**, and then set the **Action** for the **Fictional.Investment.Crm.Data**, **Fictional.Investment.PublicServices**, and **FictionalRetail.Crm.Client** projects to _**Start**._ Ensure that the order of the projects is as shown in the figure below. To change the starting order, select a project in the list and click the up or down arrow to move it. Press **OK** to confirm your changes.  
 
- 	![Configuring the start up order of the projects in the solution](./images/Configuring-the-start-up-order-of-the-projects-in-the-solution.png?raw=true "Configuring the start up order of the projects in the solution")  
+ 	![Configuring the startup order of the projects in the solution](./images/Configuring-the-start-up-order-of-the-projects-in-the-solution.png?raw=true "Configuring the startup order of the projects in the solution")  
  
-	_Configuring the start up order of the projects in the solution_  
+	_Configuring the startup order of the projects in the solution_  
 
 1. Press **F5** to build the solution and start the services and the client application.
 
@@ -133,14 +137,20 @@ In this task, you run the solution and test it locally using a **NetTcpBinding**
 
 1. Press **ENTER** in both console windows to terminate the services and then exit the client application.
 
- 
-**Task 2 - Provisioning and Configuring the Service Bus Namespace** 
+<a name="Ex1Task2" />
+#### Task 2 - Provisioning and Configuring the Service Bus Namespace ####
 
 In this task, you will create a new Windows Azure Service Bus Namespace.
 
-1. Navigate to the [Windows Azure portal](https://windows.azure.com/). You will be prompted for your Windows Live ID credentials if you are not already signed in.
+1. Navigate to the [Windows Azure portal](https://manage.windowsazure.com/). You will be prompted for your Microsoft account credentials if you are not already signed in.
 
-1. Click **Service Bus, Access Control & Caching** link in the left pane, and then select the **Service Bus** item under the **Services** element.  
+1. To manage **Service Bus** services, you need to access the previous Management portal version. To do so, hover the mouse pointer over **Preview** in the main page header and click **Take me to the previous portal**.
+
+	![Navigating to the previous portal](images/navigating-to-the-production-portal.png?raw=true "Navigating to the previous portal")
+
+	_Navigating to the previous portal_
+
+1. Once the page loads, click **Service Bus, Access Control & Caching** link in the left pane, and then select the **Service Bus** item under the **Services** element.  
 
  	![Configuring Windows Azure Service bus](./images/Configuring-Windows-Azure-Service-bus.png?raw=true "Configuring Windows Azure Service bus")  
  
@@ -174,16 +184,18 @@ In this task, you will create a new Windows Azure Service Bus Namespace.
  
 	_Namespace properties section_  
 
-1. Record the value shown for **Default Issuer** and**Default Key,** and click **OK**. You will need these values later on to authenticate using the Access Control.  
+1. Record the value shown for **Default Issuer** and **Default Key**, and click **OK**. You will need these values later on to authenticate using the Access Control.  
 
  	![Service Bus default keys](./images/Service-Bus-default-keys.png?raw=true "Service Bus default keys")  
  
 	_Service Bus default keys_  
 
  
-You have now created a new namespace for this hands-on lab. To sign in at any time, simply navigate to the [Windows Azure portal](http://go.microsoft.com/fwlink/?LinkID=129428), click **Sign In** and provide your Live ID credentials.
+You have now created a new namespace for this hands-on lab. To sign in at any time, simply navigate to the [Windows Azure portal](https://manage.windowsazure.com), click **Sign In** and provide your Microsoft account credentials.
 
-**Task 3 - Configuring Access Control Service for Authentication**
+<a name="Ex1Task3" />
+#### Task 3 - Configuring Access Control Service for Authentication ####
+
 
 The Windows Azure Access Control Service (ACS) service controls Service Bus authentication. You can take advantage of ACS to authenticate a host that listens on the Service Bus as well as clients that use the bus to connect to the service.
 
@@ -196,7 +208,13 @@ In this task, you will use the Management Portal to create two issuers, one issu
 >**Note:** For an alternative procedure that uses the command line tool to create issuers and Access Control Service rules, see Appendix 1 - Using the Windows Azure Access Control Management Command Line Tool.  
   
 
-1. Navigate to the [Windows Azure portal](https://windows.azure.com/). You will be prompted for your Windows Live ID credentials if you are not already signed in.
+1. Navigate to the [Windows Azure portal](https://manage.windowsazure.com/). You will be prompted for your Microsoft account credentials if you are not already signed in.
+
+1. To manage **Service Bus** services, you need to access the previous Management portal version. To do so, hover the mouse pointer over **Preview** in the main page header and click **Take me to the previous portal**.
+
+	![Navigating to the previous portal](images/navigating-to-the-production-portal.png?raw=true "Navigating to the previous portal")
+
+	_Navigating to the previous portal_
 
 1. Click **Service Bus, Access Control & Caching** link in the left pane, and then select the **Service Bus** item under the **Services** element.  
 
@@ -204,7 +222,7 @@ In this task, you will use the Management Portal to create two issuers, one issu
  
 	_Windows Azure ServiceBus namespaces_  
 
-1. Select your Namespace and click the Access Control Service button in the upper ribbon.  
+1. Select your Namespace and click **Access Control Service** in the upper ribbon.  
 
  	![Accessing Access Control Service](./images/Accessing-Access-Control-Service.png?raw=true "Accessing Access Control Service")  
  
@@ -216,13 +234,13 @@ In this task, you will use the Management Portal to create two issuers, one issu
  
 	_Access Control Service Portal_  
 
-1. Click the **Add** link to add a new identity.  
+1. Click the **Add** link to add  a new identity.  
 
  	![Service Identities page](./images/Service-Identities-page.png?raw=true "Service Identities page")  
  
 	_Service Identities page_  
 
-1. In the **Add Service Identity** page, enter "fictionalInvestment" in the **Name** field under **Service Identity Settings.** Under **Credential Settings** pick "Symmetric Key" as type and click the **Generate** button to generate the symmetric key for this credential. Take note of this key, as you will need it in the next step. Finally, change the **Expiration Date** to "12/31/9999" and then click the **Save** button.
+1. In the **Add Service Identity** page, enter "fictionalInvestment" in the **Name** field under **Service Identity Settings**. Under **Credential Settings** pick "Symmetric Key" as type and click the **Generate** button to generate the symmetric key for this credential. Take note of this key, as you will need it in the next step. Finally, change the **Expiration Date** to "12/31/9999" and then click the **Save** button.
 
  	![Adding a Service Identity](./images/Adding-a-Service-Identity.png?raw=true "Adding a Service Identity")
  
@@ -234,13 +252,13 @@ In this task, you will use the Management Portal to create two issuers, one issu
  
 	_Edit Service Identity_
 
-1. In the **Add Credential** page, pick "Password" as **Credential Type**. Then, in the **Password** field enter the symmetric key you generated in the previous step. Finally, change the **Expiration Date** to "12/31/9999" and click the **Save** button.      
+1. In the **Add Credential** page, pick "Password" as **Credential Type**. Then, in the **Password** field enter the symmetric key you generated in the previous step. Finally, change the **Expiration Date** to "12/31/9999" and click **Save**.      
 
  	![Add Credential](./images/Add-Credential.png?raw=true "Add Credential")    
  
 	_Add Credential_    
 
-1. In the **Edit Service Identity**, click the **Save** button to save all the changes you made so far.  
+1. In the **Edit Service Identity** page, click the **Save** button to save all the changes you made so far.  
 
  	![Saving Service Identity information](./images/Saving-Service-Identity-information.png?raw=true "Saving Service Identity information")  
  
@@ -277,7 +295,7 @@ In this case, the rule maps the issuer ID for Fictional Investment into a _Liste
 
 1. Now, you will add a "Send" rule to the fictionalInvestment identity. In the **Edit Rule Group** page, click **Add** to add a new rule. Then in the **Add Claim Rule** page, under **If** select "Access Controls Service" as **Input claim issuer**. Under **Input claim type** select "Select Type" and leave the default value for the combo box. Under **Input claim value** select **Enter value** and enter "fictionalInvestment". Under **Then** select **Enter type** as **Output claim type** and enter "net.windows.servicebus.action". Select **Enter value** as **Output claim value** and enter "Send". Then click the **Save** button.  
 
- 	![Adding a Send Claim Rule](./images/Adding-a-Send-Claim-Rule.png?raw=true "Adding a Send Claim Rule")  
+ 	![Adding a Send Claim Rule](./images/Adding-a-Send-Claim-Rule2.png?raw=true "Adding a Send Claim Rule")  
  
 	_Adding a Send Claim Rule_  
 
@@ -297,8 +315,8 @@ In this case, the rule maps the issuer ID for Fictional Investment into a _Liste
  
 	_Saving Rule Group changes_  
 
- 
-**Task 4 - Configuring the Service to Listen on the Windows Azure Service Bus**
+<a name="Ex1Task4" />
+#### Task 4 - Configuring the Service to Listen on the Windows Azure Service Bus ####
 
 The FI Public Service registers its endpoint with the Service Bus, which exposes the service through specific, discoverable URIs and makes it available to anyone regardless of where they are located, even when the service sits behind a firewall.  
  ![Application architecture with services and clients connected via the Service Bus](./images/Application-architecture-with-services-and-clients-connected-via-the-Service-Bus.png?raw=true "Application architecture with services and clients connected via the Service Bus")  
@@ -311,11 +329,11 @@ In this task, you update the Fictional Bank application to publish and consume t
 
 1. If not already open, launch Visual Studio from**Start | All Programs | Microsoft Visual Studio 2010**.
 
-1. In the **File** menu, choose **Open** **Project**. In the **Open Project** dialog, browse to **\Source\Ex1-ServiceBusRemoting\Begin**, select **Begin.sln** in the folder for the language of your preference (Visual C# or Visual Basic) and click **Open**.
+1. In the **File** menu, choose **Open Project**. In the **Open Project** dialog, browse to **\Source\Ex1-ServiceBusRemoting\Begin**, select **Begin.sln** and click **Open**.
 
 1. Add a reference to the Service Bus assembly in the FI Public Service project. To do this, in **Solution Explorer**, right-click the **FictionalInvestment.PublicServices** project and select **Add Reference**.  In the**.NET** tab, select the **Microsoft.ServiceBus** assembly and click **OK**.
 
-	> **Note:**  Verify you selected the version 1.6.0.0 of the **Microsoft.ServiceBus** assembly. If you cannot find the **Microsoft.ServiceBus** assembly in the **.NET** tab, use the **Browse** tab to locate this assembly inside the **%ProgramFiles%\Windows Azure SDK\v1.6\ServiceBus\ref\** folder.
+	> **Note:**  Verify you selected the version 1.7.0.0 of the **Microsoft.ServiceBus** assembly. If you cannot find the **Microsoft.ServiceBus** assembly in the **.NET** tab, use the **Browse** tab to locate this assembly inside the **%Program Files%\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\ref\** folder.
 
  	![Locating the Microsoft.ServiceBus assembly in the SDK Assemblies folder](./images/Locating-the-Microsoft.ServiceBus-assembly-in-the-SDK-Assemblies-folder.png?raw=true "Locating the Microsoft.ServiceBus assembly in the SDK Assemblies folder")  
  
@@ -370,7 +388,7 @@ In this task, you update the Fictional Bank application to publish and consume t
 
 1. Insert the following (highlighted) block into the **system.serviceModel** section to enable behavior and binding extensions.
 
-	(Code Snippet - _Service Remoting with Service Bus Lab - Ex02 BehaviorExtensions_)
+	(Code Snippet - _Service Remoting with Service Bus Lab - Ex01 BehaviorExtensions_)
 
 	````XML
 	<configuration>
@@ -380,20 +398,20 @@ In this task, you update the Fictional Bank application to publish and consume t
 	    <extensions>
 	      <behaviorExtensions>
 	        <add name="transportClientEndpointBehavior"
-	             type="Microsoft.ServiceBus.Configuration.TransportClientEndpointBehaviorElement, Microsoft.ServiceBus, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
+	             type="Microsoft.ServiceBus.Configuration.TransportClientEndpointBehaviorElement, Microsoft.ServiceBus, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
 	      </behaviorExtensions>
 	      <bindingExtensions>
 	        <add name="netTcpRelayBinding"
-	             type="Microsoft.ServiceBus.Configuration.NetTcpRelayBindingCollectionElement, Microsoft.ServiceBus, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
+	             type="Microsoft.ServiceBus.Configuration.NetTcpRelayBindingCollectionElement, Microsoft.ServiceBus, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
 	      </bindingExtensions>
 	    </extensions>
 	  </system.serviceModel>
 	</configuration>
 	````
 
-1. To complete the changes required to publish the service on the Service Bus, configure the connectivity mode of the service. Open the **Program.cs** file (for Visual C# projects) or **Module1.vb** file (for Visual Basic projects) in the **FictionalInvestment.PublicServices** project and insert the following (highlighted) code at the start of method **Main**.
+1. To complete the changes required to publish the service on the Service Bus, configure the connectivity mode of the service. Open the **Program.cs** file in the **FictionalInvestment.PublicServices** project and insert the following (highlighted) code at the start of method **Main**.
 
-	(Code Snippet - _Service Remoting with Service Bus Lab - Ex01 ConnectivityMode - CS_)
+	(Code Snippet - _Service Remoting with Service Bus Lab - Ex01 ConnectivityMode_)
 
 	````C#
 	internal static void Main()
@@ -411,34 +429,19 @@ In this task, you update the Fictional Bank application to publish and consume t
 	}
 	````
 
-	(Code Snippet - _Service Remoting with Service Bus Lab - Ex01 ConnectivityMode - VB_)
-
-	
-	````VB.NET
-Sub Main()
-	  ' Tcp: All communication to the Service Bus is performed using outbound TCP connections.
-	  ' Http: All communication to Service Bus is performed using outbound HTTP connections.
-	  ' AutoDetect: The Service bus client automatically selects between TCP and HTTP connectivity.
-	  Microsoft.ServiceBus.ServiceBusEnvironment.SystemConnectivity.Mode = Microsoft.ServiceBus.ConnectivityMode.AutoDetect
-	
-	  Using serviceHost As New ServiceHost(GetType(CrmPublicService))
-	    serviceHost.Open()
-	    ...
-	  End Using
-	End Sub
-````
-
-	
 
 	>**Note:** The default connection mode between the listener service and Windows Azure Service Bus is TCP. However, if the network environment does not allow outbound TCP connections beyond HTTP, for example, because of changes in Fictional Investment's IT policy, you can configure the corresponding binding to use an HTTP connection to communicate with Service Bus. For most scenarios, it is recommended that you set the Mode to AutoDetect. This indicates that your application will attempt to use TCP to connect to the Service Bus, but will use HTTP if it is unable to do so.    
  
-**Task 5 - Configuring the Client Application to Connect to a Service on the Windows Azure Service Bus**
+
+
+<a name="Ex1Task5" />
+#### Task 5 - Configuring the Client Application to Connect to a Service on the Windows Azure Service Bus ####
 
 In the previous task, you configured the service to listen on the Service Bus.  In this task, you set up the client application in a similar manner to allow it to connect to the service.
 
 1. Add a reference to the Service Bus assembly in the client application project. To do this, in **Solution Explorer**, right-click the **FictionalRetail.Crm.Client** project and select **Add Reference**.  In the**.NET** tab, select the **Microsoft.ServiceBus** assembly and click **OK**.
 
-	>**Note:**  Verify you selected the version 1.6.0.0 of the **Microsoft.ServiceBus** assembly. If you cannot find the **Microsoft.ServiceBus** assembly in the **.NET** tab, use the **Browse** tab to locate this assembly inside the **%ProgramFiles%\Windows Azure SDK\v1.6\ServiceBus\ref\**  folder.
+	>**Note:**  Verify you selected the version 1.7.0.0 of the **Microsoft.ServiceBus** assembly. If you cannot find the **Microsoft.ServiceBus** assembly in the **.NET** tab, use the **Browse** tab to locate this assembly inside the **%ProgramFiles%\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\ref**  folder.
 
 1. Open the **App.config** file in the **FictionalRetail.Crm.Client** project.
 
@@ -495,20 +498,20 @@ In the previous task, you configured the service to listen on the Service Bus.  
 	    <extensions>
 	      <behaviorExtensions>
 	        <add name="transportClientEndpointBehavior"
-	             type="Microsoft.ServiceBus.Configuration.TransportClientEndpointBehaviorElement, Microsoft.ServiceBus, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
+	             type="Microsoft.ServiceBus.Configuration.TransportClientEndpointBehaviorElement, Microsoft.ServiceBus, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
 	      </behaviorExtensions>
 	      <bindingExtensions>
 	        <add name="netTcpRelayBinding"
-	             type="Microsoft.ServiceBus.Configuration.NetTcpRelayBindingCollectionElement, Microsoft.ServiceBus, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
+	             type="Microsoft.ServiceBus.Configuration.NetTcpRelayBindingCollectionElement, Microsoft.ServiceBus, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
 	      </bindingExtensions>
 	    </extensions>
 	  </system.serviceModel>
 	</configuration>
 	````
 
-1. Set the connectivity mode of the client application. Right-click the **Main.cs** file (for Visual C# projects) or **Main.vb** file (for Visual Basic projects) in the **FictionalRetail.Crm.Client** project and select **View Code**, then insert the following (highlighted) code at the start of the constructor for the **Main** class.
+1. Set the connectivity mode of the client application. Right-click the **Main.cs** file in the **FictionalRetail.Crm.Client** project and select **View Code**, then insert the following (highlighted) code at the start of the constructor for the **Main** class.
 
-	(Code Snippet - _Service Remoting with Service Bus Lab - Ex01 ConnectivityModeClient - CS_)
+	(Code Snippet - _Service Remoting with Service Bus Lab - Ex01 ConnectivityModeClient_)
 
 	````C#
 	public Main()
@@ -524,27 +527,8 @@ In the previous task, you configured the service to listen on the Service Bus.  
 	}
 	````
 
-	(Code Snippet - _Service Remoting with Service Bus Lab - Ex01 ConnectivityModeClient - VB_)
-
-
-	
-	````VB.NET
-	Public Sub New()
-	  ' Tcp: All communication to the Service Bus is performed using outbound TCP connections.
-	  ' Http: All communication to Service Bus is performed using outbound HTTP connections.
-	  ' AutoDetect: The Service bus client automatically selects between TCP and HTTP connectivity.
-	  Microsoft.ServiceBus.ServiceBusEnvironment.SystemConnectivity.Mode = Microsoft.ServiceBus.ConnectivityMode.AutoDetect
-	
-	  Me.client = New PublicServiceClient()
-	  Me.InitializeComponent()
-	End Sub
-	````
-
-
-
- 	
- 
-**Verification**
+<a name="Ex1Verification" />
+#### Verification ####
 
 You are now ready to test the application using the Service Bus.
 
@@ -574,25 +558,26 @@ You are now ready to test the application using the Service Bus.
 
 1. Press **ENTER** in both console windows to terminate the services and then exit the client application.
 
-<a name="exercise2" />
+<a name="Exercise2" />
 ### Exercise 2: Publishing Services Hosted in Windows Azure with the Service Bus ###
 
- Azure-hosted services can publish their endpoints using the Service Bus too.   
+ Azure Cloud services can publish their endpoints using the Service Bus too.   
  ![Application architecture with services deployed to Windows Azure and listening on the Service Bus](./images/Application-architecture-with-services-deployed-to-Windows-Azure-and-listening-on-the-Service-Bus.png?raw=true "Application architecture with services deployed to Windows Azure and listening on the Service Bus")  
   
 _Application architecture with services deployed to Windows Azure and listening on the Service Bus_  
 
 In this exercise, you update the FI Public Service project and convert it into a worker role. This allows you to host the service in Windows Azure. Because the service is already listening via the Service Bus, clients remain unaware of the change and continue to run with no changes to their code or their configuration. Nevertheless, in this scenario, the CRM Data Service remains on-premises and you now need to configure it to listen on the Service Bus in order for the FI Public Service-now hosted in Windows Azure-to access it.
 
-**Task 1 - Hosting the Service in a Windows Azure Worker Role**
+<a name="Ex2Task1" />
+#### Task 1 - Hosting the Service in a Windows Azure Worker Role ####
 
 In this task, you update the FI Public Service project, which is currently a Windows Console application, and convert it into a worker role.
 
-1. Open Visual Studio in elevated administrator mode from**Start | All Programs | Microsoft Visual Studio 2010** by right clicking the **Microsoft Visual Studio 2010** shortcut and choosing **Run as administrator**. 
+1. Open Visual Studio in elevated administrator mode from **Start | All Programs | Microsoft Visual Studio 2010** by right clicking the **Microsoft Visual Studio 2010** shortcut and choosing **Run as administrator**. 
 
 	>**Note:** Running in elevated administrator mode is required to run Windows Azure projects in the Compute Emulator.
 
-1. In the **File** menu, choose **Open** **Project**. In the **Open Project** dialog, browse to **C:\WAPTK\Labs\** **ServiceRemotingVS2010\Source\Ex2-AzureServices\Begin**, select **ServiceRemoting.sln** in the folder for the language of your preference (Visual C# or Visual Basic) and click **Open**. Alternatively, you may continue with the solution that you obtained after completing the previous exercise.
+1. In the **File** menu, choose **Open Project**. In the **Open Project** dialog, browse to **Source\Ex2-AzureServices\Begin** folder of this lab, select **ServiceRemoting.sln** and click **Open**. Alternatively, you may continue with the solution that you obtained after completing the previous exercise.
 
 1. Add a reference to the **Microsoft.ServiceBus** to the FI CrmData project. To do this, in **Solution Explorer**, right-click the **FictionalInvestment.Crm.Data** project and select **Add Reference**. In the **.NET** tab, select the **Microsoft.ServiceBus** reference and click **OK**.
 
@@ -602,11 +587,7 @@ In this task, you update the FI Public Service project, which is currently a Win
  
 	_Adding a reference to the Windows Azure assemblies_  
 
-1. Some assemblies required by the service are not ordinarily present in a Windows Azure VM; therefore, you must ship these assemblies with the service package to ensure that they are available. You do this by configuring the Copy Local property of the corresponding assembly reference.
-
-	For Visual C# projects, to configure a reference, expand the **References** node for the **FictionalInvestment.PublicServices** project in **Solution Explorer**, right-click the corresponding reference in the **References** list, and select **Properties**.
-
-	For Visual Basic projects, right-click the **FictionalInvestment.PublicServices** project in **Solution Explorer** and select **Properties**. In the **Project Properties** window, switch to the **References** tab, select the required assembly, and press **F4**.
+1. Some assemblies required by the service are not ordinarily present in a Windows Azure VM; therefore, you must ship these assemblies with the service package to ensure that they are available. You do this by configuring the Copy Local property of the corresponding assembly reference. To configure a reference, expand the **References** node for the **FictionalInvestment.PublicServices** project in **Solution Explorer**, right-click the corresponding reference in the **References** list, and select **Properties**.
 
 	To add the assembly to the service package, in the **Properties** window of the assembly, change the value of the **Copy Local** setting to _True_.
 
@@ -616,7 +597,7 @@ In this task, you update the FI Public Service project, which is currently a Win
   
 	_Including an assembly in the Windows Azure service package_  
 
-1. Next, create a new cloud service project and add it to the solution. To do this, in the**File** menu, point to **Add** and then select **New Project**. In the **New Project** dialog, expand the language of your preference (Visual C# or Visual Basic) in the **Installed Templates** list and select **Cloud**. Choose the **Windows Azure Project** template, set the **Name** of the project to **CloudService** and accept the proposed location in the folder of the solution. Click **OK** to create the project.  
+1. Next, create a new cloud service project and add it to the solution. To do this, in the **File** menu, point to **Add** and then select **New Project**. In the **New Project** dialog, expand Visual C# language in the **Installed Templates** list and select **Cloud**. Choose the **Windows Azure Project** template, set the **Name** of the project to **CloudService** and accept the proposed location in the folder of the solution. Click **OK** to create the project.  
 
  	![Creating a new Windows Azure Cloud Service project](./images/Creating-a-new-Windows-Azure-Cloud-Service-project.png?raw=true "Creating a new Windows Azure Cloud Service project")  
  
@@ -628,29 +609,26 @@ In this task, you update the FI Public Service project, which is currently a Win
  
 	_No additional roles are required_  
 
-1. Add the FI Public Service project as a worker role in the cloud service project. To do this, in **Solution Explorer**, right-click the **Roles** node in the**CloudService** project, point to **Add** and then select **Worker Role Project in Solution**. In the **Associate with Role Project** dialog, select the **FictionalInvestment.PublicServices** project and click **OK**.  
+1. Add the FI Public Service project as a worker role in the cloud service project. To do this, in **Solution Explorer**, right-click the **Roles** node in the **CloudService** project, point to **Add** and then select **Worker Role Project in Solution**. In the **Associate with Role Project** dialog, select the **FictionalInvestment.PublicServices** project and click **OK**.  
 
  	![Adding the FI Public Service project as a worker role](./images/Adding-the-FI-Public-Service-project-as-a-worker-role.png?raw=true "Adding the FI Public Service project as a worker role")  
  
 	_Adding the FI Public Service project as a worker role_  
 
-	> **Note:** The **FictionalInvestment.PublicServices** project is a standard Windows Console Application project. Ordinarily, you would not use this type of application as the starting point for a worker role. In order for Visual Studio to recognize it as a worker role candidate and allow its name to appear in the **Associate with Role Project** dialog, it was necessary to modify the project (.csproj for C# and .vbproj for Visual Basic) file to add a **RoleType** element and set its value to _Worker_. 
+	> **Note:** The **FictionalInvestment.PublicServices** project is a standard Windows Console Application project. Ordinarily, you would not use this type of application as the starting point for a worker role. In order for Visual Studio to recognize it as a worker role candidate and allow its name to appear in the **Associate with Role Project** dialog, it was necessary to modify the project (.csproj) file to add a **RoleType** element and set its value to _Worker_. 
+	>
+	>![Roletype](images/Roletype.png?raw=true)
 
-	![Roletype](images/Roletype.png?raw=true)
-1. To be able to use the existing service project as a worker role, you need to include a role entry point in the project. To insert a pre-built entry point class, in **Solution Explorer**, right-click the **FictionalInvestment.PublicServices** project, point to **Add** and select **Existing Item**.  In the **Add** **Existing Item** dialog, navigate to **C:\WAPTK\Labs\** **ServiceRemotingVS2010\Source\Assets** and select the **WorkerRole.cs** file (for Visual C# projects) or **WorkerRole.vb** file (for Visual Basic projects) and click **Add**.  
+1. To be able to use the existing service project as a worker role, you need to include a role entry point in the project. To insert a pre-built entry point class, in **Solution Explorer**, right-click the **FictionalInvestment.PublicServices** project, point to **Add** and select **Existing Item**.  In the **Add** **Existing Item** dialog, navigate to **Assets** folder within the **Source** folder of this lab, select the **WorkerRole.cs** file and click **Add**.  
 
- 	![Solution Explorer showing the new worker role entry point class C](./images/Solution-Explorer-showing-the-new-worker-role-entry-point-class-C.png?raw=true "Solution Explorer showing the new worker role entry point class C")  
+ 	![Solution Explorer showing the new worker role entry point class](./images/Solution-Explorer-showing-the-new-worker-role-entry-point-class-C.png?raw=true "Solution Explorer showing the new worker role entry point class")  
   
-	_Solution Explorer showing the new worker role entry point class (C#)_  
-
- 	![Solution Explorer showing the new worker role entry point class VB](./images/Solution-Explorer-showing-the-new-worker-role-entry-point-class-VB.png?raw=true "Solution Explorer showing the new worker role entry point class VB")  
-  
-	_Solution Explorer showing the new worker role entry point class (VB)_  
+	_Solution Explorer showing the new worker role entry point class_  
 
 	>**Note:** The **WorkerRole** class is a **RoleEntryPoint** derived class modified to host the service. It contains methods that Windows Azure calls at various stages during the lifetime of the role.
-        
-	> Windows Azure invokes the **OnStart** method when the role starts. You can use this method to initialize the role. In the provided class, the **OnStart** method contains code to set up diagnostics settings that schedule an automatic transfer of the worker role logs to an Azure Storage account, where you can retrieve them. Note that the code initializes the Windows Azure Diagnostics configuration from a connection string in the service configuration file (**ServiceConfiguration.cscfg**), which is currently set to use Windows Azure storage emulator. If you deploy the service to Windows Azure, you need to update this configuration with your own Azure Storage account settings.    
-      
+	>    
+	> Windows Azure invokes the **OnStart** method when the role starts. You can use this method to initialize the role. In the provided class, the **OnStart** method contains code to set up diagnostics settings that schedule an automatic transfer of the worker role logs to a Storage account in Windows Azure, where you can retrieve them. Note that the code initializes the Windows Azure Diagnostics configuration from a connection string in the service configuration file (**ServiceConfiguration.cscfg**), which is currently set to use the storage emulator. If you deploy the service to Windows Azure, you need to update this configuration with your own Storage account settings.    
+	>  
 	> The **Run** method of the **WorkerRole** class contains the code executed by the role to provide its functionality. In this case, it sets up a WCF **ServiceHost** for the FI Public Service and starts listening for requests on the Service Bus.  
 Finally, Windows Azure calls the **OnStop** method just before it shuts down the worker role. Here, it is used to close the WCF service.
 
@@ -664,7 +642,7 @@ Finally, Windows Azure calls the **OnStop** method just before it shuts down the
 	  <system.diagnostics>
 	    <trace>
 	      <listeners>
-	        <add type="Microsoft.WindowsAzure.Diagnostics.DiagnosticMonitorTraceListener, Microsoft.WindowsAzure.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" name="AzureDiagnostics">
+	        <add type="Microsoft.WindowsAzure.Diagnostics.DiagnosticMonitorTraceListener, Microsoft.WindowsAzure.Diagnostics, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" name="AzureDiagnostics">
 	          <filter type="" />
 	        </add>
 	      </listeners>
@@ -681,12 +659,13 @@ Finally, Windows Azure calls the **OnStop** method just before it shuts down the
  
  	_Configuring the trust level of the worker role_  
  
-**Task 2 - (Optional) Configuring the CRM Data Service to Listen on the Windows Azure Service Bus**
+<a name="Ex2Tas2" />
+#### Task 2 - (Optional) Configuring the CRM Data Service to Listen on the Windows Azure Service Bus ####
 
 Because the FI Public Service now runs in Windows Azure and relies on the CRM Data Service, which continues to be hosted on-premises, it is necessary to update the latter to listen on the Service Bus.
 
 > **Note:** The procedure required to do this is no different from the one that you performed in Exercise 1, when you published the FI Public Service itself via the Service Bus. If you started the current exercise from the solution that you obtained after completing Exercise 1, then, you need to complete this task; otherwise, if you used  the begin solution provided for the current exercise, then you can safely skip this task. All the necessary changes are already included in the begin solution.
-
+>
 > In either case, you **DO** still require to update the endpoint address and the credentials of the service in the **App.config** file of the **FictionalInvestment.Crm.Data** project, as well as the endpoint address and credentials of the client in the **App.config** file of the **FictionalInvestment.PublicServices** and **FictionalClient.Crm.Client** projects. This is simply because the values are specific to your Service Bus project. You will find instructions on how to do this in the **Verification** section of this exercise.
 
 1. Open the **App.config** file of the **FictionalInvestment.Crm.Data** project.
@@ -737,11 +716,11 @@ Because the FI Public Service now runs in Windows Azure and relies on the CRM Da
 	    <extensions>
 	      <behaviorExtensions>
 	        <add name="transportClientEndpointBehavior"
-	             type="Microsoft.ServiceBus.Configuration.TransportClientEndpointBehaviorElement, Microsoft.ServiceBus, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
+	             type="Microsoft.ServiceBus.Configuration.TransportClientEndpointBehaviorElement, Microsoft.ServiceBus, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
 	      </behaviorExtensions>
 	      <bindingExtensions>
 	        <add name="netTcpRelayBinding"
-	             type="Microsoft.ServiceBus.Configuration.NetTcpRelayBindingCollectionElement, Microsoft.ServiceBus, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
+	             type="Microsoft.ServiceBus.Configuration.NetTcpRelayBindingCollectionElement, Microsoft.ServiceBus, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"/>
 	      </bindingExtensions>
 	    </extensions>
 	  </system.serviceModel>
@@ -812,7 +791,7 @@ Before you begin, you need to ensure that you have configured the service endpoi
  
 ## Summary ##
 
-By completing this hands-on lab, you saw how, with minimal changes to code and configuration, you can take an existing service and make it reachable from anywhere using the Service Bus. During the course of the lab, you learnt how to provision an Service Bus account and configure namespaces for you service. You took advantage of Windows Azure Access Control Service to provide claims-based authentication, creating rules that map an identity into claims that determine what actions an issuer is allowed to perform. Finally, you relocated a service to Windows Azure and saw how its clients are not affected by the change because the service continues to listen at the same URL, whether it is hosted on-premises or in the cloud.
+By completing this hands-on lab, you saw how, with minimal changes to code and configuration, you can take an existing service and make it reachable from anywhere using the Service Bus. During the course of the lab, you learnt how to provision a Service Bus account and configure namespaces for you service. You took advantage of Windows Azure Access Control Service to provide claims-based authentication, creating rules that map an identity into claims that determine what actions an issuer is allowed to perform. Finally, you relocated a service to Windows Azure and saw how its clients are not affected by the change because the service continues to listen at the same URL, whether it is hosted on-premises or in the cloud.
 
 ## Appendix - Using the SBaZTool Command Line Tool ##
 
