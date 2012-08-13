@@ -1,7 +1,7 @@
-﻿<a name="Title" />
+﻿<a name="Title"></a>
 #Service Remoting With Windows Azure Service Bus#
 
-<a name="Overview" />
+<a name="Overview"></a>
 ## Overview ##
 
 Due to recent bank regulation, the Fictional Bank is ordered to split into two separate banking entities: Fictional Investment and Fictional Retail. The IT department needs to restructure the existing customer relationship management (CRM) such that both banking entities can continue to share customer data even though they are no longer within the same corporate network boundary. The existing CRM Web services in Fictional Bank are largely written using Windows Communication Foundation and hosted on-premises.
@@ -12,7 +12,7 @@ In a second phase, Fictional Investment outsources its application services host
 
 This hands-on lab walks you through this scenario using a sample application that replicates, albeit in a simplistic manner, the application architecture at Fictional Bank.
 
-<a name="Objectives" />
+<a name="Objectives"></a>
 ### Objectives ###
 
 In this hands-on lab, you will learn how to:
@@ -25,23 +25,21 @@ In this hands-on lab, you will learn how to:
 
 - Publish services hosted in Windows Azure using the Service Bus
 
-<a name="Prerequisites" />
+<a name="Prerequisites"></a>
 ### Prerequisites ###
 
 The following is required to complete this hands-on Lab:
 
 - IIS 7 (with ASP.NET, WCF HTTP Activation)
-
 - [Microsoft .NET Framework 4.0](http://go.microsoft.com/fwlink/?linkid=186916)
-
 - [Microsoft Visual Studio 2010](http://msdn.microsoft.com/vstudio/products/)
-
 - [Windows Azure Tools for Visual Studio 1.7](http://www.microsoft.com/windowsazure/sdk/)
 - [Windows Azure  Libraries for .Net 1.7](http://www.microsoft.com/windowsazure/sdk/)
+- A Windows Azure subscription - [sign up for a free trial](http://aka.ms/WATK-FreeTrial)
 
 >**Note:** This lab was designed to use Windows 7 Operating System. You must have Internet access to complete the lab.
 
-<a name="Setup" />
+<a name="Setup"></a>
 ### Setup ###
 In order to execute the exercises in this hands-on lab you need to set up your environment.
 
@@ -64,7 +62,7 @@ If you are not familiar with the Visual Studio Code Snippets, and want to learn 
 
 ---
 
-<a name="Exercises" />
+<a name="Exercises"></a>
 ## Exercises ##
 
 This hands-on lab includes the following exercises:
@@ -79,7 +77,7 @@ Estimated time to complete this lab: **45 minutes**.
 
 > **Note:** When you first start Visual Studio, you must select one of the predefined settings collections. Every predefined collection is designed to match a particular development style and determines window layouts, editor behavior, IntelliSense code snippets, and dialog box options. The procedures in this lab describe the actions necessary to accomplish a given task in Visual Studio when using the **General Development Settings** collection. If you choose a different settings collection for your development environment, there may be differences in these procedures that you need to take into account.
 
-<a name="Exercise1" />
+<a name="Exercise1"></a>
 ###  Exercise 1: Using the Service Bus to Host Services Remotely  ###
 
 
@@ -93,7 +91,7 @@ Initially, you run the service to reproduce a scenario where all services are ho
 
 Nonetheless, Fictional Retail clients are not located within Fictional Investment's network.  In order to make the services externally accessible to Fictional Retail clients, you then update the WCF configuration to expose the FI Public Service over the Service Bus using a **NetTcpRelayBinding** class and a public endpoint address. This makes the service reachable from anywhere and allows you to fulfill one of the goals in the proposed scenario.
 
-<a name="Ex1Task1" />
+<a name="Ex1Task1"></a>
 #### Task 1 - Running the Service On-Premises ####
 
 In this task, you run the solution and test it locally using a **NetTcpBinding** to replicate the fully on-premises scenario, with services and clients located within the same network boundary.
@@ -137,7 +135,7 @@ In this task, you run the solution and test it locally using a **NetTcpBinding**
 
 1. Press **ENTER** in both console windows to terminate the services and then exit the client application.
 
-<a name="Ex1Task2" />
+<a name="Ex1Task2"></a>
 #### Task 2 - Provisioning and Configuring the Service Bus Namespace ####
 
 In this task, you will create a new Windows Azure Service Bus Namespace.
@@ -193,7 +191,7 @@ In this task, you will create a new Windows Azure Service Bus Namespace.
  
 You have now created a new namespace for this hands-on lab. To sign in at any time, simply navigate to the [Windows Azure portal](https://manage.windowsazure.com), click **Sign In** and provide your Microsoft account credentials.
 
-<a name="Ex1Task3" />
+<a name="Ex1Task3"></a>
 #### Task 3 - Configuring Access Control Service for Authentication ####
 
 
@@ -315,7 +313,7 @@ In this case, the rule maps the issuer ID for Fictional Investment into a _Liste
  
 	_Saving Rule Group changes_  
 
-<a name="Ex1Task4" />
+<a name="Ex1Task4"></a>
 #### Task 4 - Configuring the Service to Listen on the Windows Azure Service Bus ####
 
 The FI Public Service registers its endpoint with the Service Bus, which exposes the service through specific, discoverable URIs and makes it available to anyone regardless of where they are located, even when the service sits behind a firewall.  
@@ -434,7 +432,7 @@ In this task, you update the Fictional Bank application to publish and consume t
  
 
 
-<a name="Ex1Task5" />
+<a name="Ex1Task5"></a>
 #### Task 5 - Configuring the Client Application to Connect to a Service on the Windows Azure Service Bus ####
 
 In the previous task, you configured the service to listen on the Service Bus.  In this task, you set up the client application in a similar manner to allow it to connect to the service.
@@ -527,7 +525,7 @@ In the previous task, you configured the service to listen on the Service Bus.  
 	}
 	````
 
-<a name="Ex1Verification" />
+<a name="Ex1Verification"></a>
 #### Verification ####
 
 You are now ready to test the application using the Service Bus.
@@ -558,7 +556,7 @@ You are now ready to test the application using the Service Bus.
 
 1. Press **ENTER** in both console windows to terminate the services and then exit the client application.
 
-<a name="Exercise2" />
+<a name="Exercise2"></a>
 ### Exercise 2: Publishing Services Hosted in Windows Azure with the Service Bus ###
 
  Azure Cloud services can publish their endpoints using the Service Bus too.   
@@ -568,7 +566,7 @@ _Application architecture with services deployed to Windows Azure and listening 
 
 In this exercise, you update the FI Public Service project and convert it into a worker role. This allows you to host the service in Windows Azure. Because the service is already listening via the Service Bus, clients remain unaware of the change and continue to run with no changes to their code or their configuration. Nevertheless, in this scenario, the CRM Data Service remains on-premises and you now need to configure it to listen on the Service Bus in order for the FI Public Service-now hosted in Windows Azure-to access it.
 
-<a name="Ex2Task1" />
+<a name="Ex2Task1"></a>
 #### Task 1 - Hosting the Service in a Windows Azure Worker Role ####
 
 In this task, you update the FI Public Service project, which is currently a Windows Console application, and convert it into a worker role.
@@ -659,7 +657,7 @@ Finally, Windows Azure calls the **OnStop** method just before it shuts down the
  
  	_Configuring the trust level of the worker role_  
  
-<a name="Ex2Tas2" />
+<a name="Ex2Tas2"></a>
 #### Task 2 - (Optional) Configuring the CRM Data Service to Listen on the Windows Azure Service Bus ####
 
 Because the FI Public Service now runs in Windows Azure and relies on the CRM Data Service, which continues to be hosted on-premises, it is necessary to update the latter to listen on the Service Bus.
