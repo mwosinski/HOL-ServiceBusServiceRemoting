@@ -15,6 +15,7 @@
 	<Version>1.0.1</Version>
 	<Source>.\Source</Source>
 <CustomProperties>    
+  	<Property Name="ContentType" Value="VS2010" />
 	<Property Name="GitHubRepository" Value="https://github.com/WindowsAzure-TrainingKit/HOL-ServiceBusServiceRemoting" />
 </CustomProperties>  
 </Lab> 
