@@ -12,9 +12,11 @@
   <Description>In this hands-on lab you will learn how to provision a Service Bus account and configure namespaces for you service. You will take advantage of Windows Azure Access Control Service to provide claims-based authentication, creating rules that map an identity into claims that determine what actions an issuer is allowed to perform. </Description>
   <Document ConversionType="Html">.\HOL.md</Document>
   <Title>Service Remoting With Windows Azure Service Bus</Title>
-  <Version>1.0.2</Version>
+  <Version>1.0.3</Version>
   <Source>.\Source</Source>
+  <DependencyChecker>.\Source\Setup\Dependencies.depi</DependencyChecker>
   <CustomProperties>
+    <Property Name="ContentTag" Value="1.8" />
     <Property Name="ContentType" Value="VS2010" />
     <Property Name="GitHubRepository" Value="https://github.com/WindowsAzure-TrainingKit/HOL-ServiceBusServiceRemoting" />
   </CustomProperties>
